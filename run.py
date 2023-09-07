@@ -31,7 +31,7 @@ if MQTT:
     mqttc = mqtt.Client(client_id='mqtt-rds', userdata=None, protocol=mqtt.MQTTv5, transport='tcp')
     mqttc.username_pw_set(os.getenv("MQTTUSER"), password=os.getenv("MQTTPASS"))
     mqttc.connect(os.getenv("MQTTHOST"))
-    mqttc.subscribe("basic_status/runningtests")
+    mqttc.subscribe("basic_status/site1")
 
 def on_message(client, userdata, message):
     msg = str(message.payload.decode("utf-8"))

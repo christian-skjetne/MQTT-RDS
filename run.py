@@ -31,7 +31,7 @@ if MQTT:
     mqttc = mqtt.Client(client_id='mqtt-rds', userdata=None, protocol=mqtt.MQTTv5, transport='tcp')
     mqttc.username_pw_set(os.getenv("MQTTUSER"), password=os.getenv("MQTTPASS"))
     mqttc.connect(os.getenv("MQTTHOST"))
-    mqttc.subscribe("basic_status/runningtests")
+    mqttc.subscribe("basic_status/site1")
 
 def on_message(client, userdata, message):
     msg = str(message.payload.decode("utf-8"))
@@ -46,7 +46,7 @@ def on_message(client, userdata, message):
     #TODO: change to site topics
     if('siteid' in jmsg and jmsg['siteid'] == 1):
         print("message received " ,msg)
-        if('status' in jmsg and jmsg['status'] == "no running tests"):
+        if('status' in jmsg and jmsg['status'] == "no running test"):
             sendCommand('PS', "no test")
             getResp(True,True)
             sendCommand('RT1', "No running tests")

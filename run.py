@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 import os
 import socket
+import random
 
 DEBUG = False
 MQTT = True
@@ -27,13 +28,14 @@ else:
     print("RUNNING IN DEBUG MODE")
 
 if MQTT:
-    print('Connecting to mqtt: '+os.getenv("MQTTHOST"))
-    mqttc = mqtt.Client(client_id='mqtt-rds', userdata=None, protocol=mqtt.MQTTv5, transport='tcp')
+    print('Connecting to mqtt: '+os.getenv("MQTTUSER")+"@"+os.getenv("MQTTHOST"))
+    mqttc = mqtt.Client(client_id='mqtt-rds-'+str(random.randint(0, 999)), userdata=None, protocol=mqtt.MQTTv5, transport='tcp')
     mqttc.username_pw_set(os.getenv("MQTTUSER"), password=os.getenv("MQTTPASS"))
     mqttc.connect(os.getenv("MQTTHOST"))
     mqttc.subscribe("basic_status/site1")
 
 def on_message(client, userdata, message):
+    print("msg")
     msg = str(message.payload.decode("utf-8"))
     
     try:
@@ -174,6 +176,8 @@ while(True):
         current_date = now.strftime("%d.%m.%y")
         print('Setting date to: '+current_date)
         sendCommand('DATE',current_date)
+    elif(cmd == 't'):
+        print("connected: "+str(mqttc.is_connected()))
     elif(cmd == "EXIT" or cmd == "e"):
         if not DEBUG and not TCP:
             ser.close()

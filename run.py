@@ -46,7 +46,7 @@ def on_message(client, userdata, message):
     #TODO: change to site topics
     if('siteid' in jmsg and jmsg['siteid'] == 1):
         print("message received " ,msg)
-        if('status' in jmsg and jmsg['status'] == "no running tests"):
+        if('status' in jmsg and jmsg['status'] == "no running test"):
             sendCommand('PS', "no test")
             getResp(True,True)
             sendCommand('RT1', "No running tests")
